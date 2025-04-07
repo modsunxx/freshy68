@@ -44,7 +44,9 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
       body: JSON.stringify(data)
     });
 
-    document.getElementById('successMessage').classList.remove('hidden');
+    // Show success message
+    alert('ส่งสำเร็จ'); // Alert message
+    document.getElementById('successMessage').classList.remove('hidden'); // Show hidden success message element
     document.getElementById('registrationForm').reset();
   } catch (err) {
     console.error('Error:', err);
