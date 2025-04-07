@@ -5,17 +5,18 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
   const studentId = document.getElementById('studentId').value;
   const faculty = document.getElementById('faculty').value;
   const designFile = document.getElementById('design').files[0];
+  const successMessage = document.getElementById('successMessage');
 
-  const imgbbApiKey = '75774c37fe8cb9209a4034f89c3560cf'; // 🔁 API key
+  const imgbbApiKey = '75774c37fe8cb9209a4034f89c3560cf';
   const googleScriptURL = 'https://script.google.com/macros/s/AKfycbwINB4wkkC8CAa5m-rrzsXxOs4CR_AXYTZE0L66UxmE4fxpqzlemCrtfCV4568_KD0IMA/exec';
 
   if (!designFile) {
-    alert("Please upload a design file.");
+    alert("กรุณาอัปโหลดไฟล์ดีไซน์ก่อนส่งข้อมูล");
     return;
   }
 
   try {
-    // ✅ ส่งไฟล์ตรงๆ ไป ImgBB
+    // 👕 อัปโหลดไฟล์ภาพไปยัง ImgBB
     const imgbbFormData = new FormData();
     imgbbFormData.append('image', designFile);
 
@@ -27,6 +28,7 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
     const imgbbData = await imgbbRes.json();
     const designURL = imgbbData.data.url;
 
+    // 📤 ส่งข้อมูลไป Google Sheets
     const data = {
       name,
       studentId,
@@ -34,7 +36,6 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
       designURL
     };
 
-    // ✅ ส่งข้อมูลไป Google Sheet
     await fetch(googleScriptURL, {
       method: 'POST',
       mode: 'no-cors',
@@ -44,11 +45,20 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
       body: JSON.stringify(data)
     });
 
-    // Show success message
-    document.getElementById('successMessage').classList.remove('hidden'); // Show hidden success message element
+    // ✅ แสดงข้อความสำเร็จ
+    successMessage.textContent = '✅ ข้อมูลถูกส่งเรียบร้อยแล้ว!';
+    successMessage.style.display = 'block';
+
+    // รีเซตฟอร์ม
     document.getElementById('registrationForm').reset();
+
+    // ซ่อนข้อความหลัง 5 วินาที
+    setTimeout(() => {
+      successMessage.style.display = 'none';
+    }, 5000);
+
   } catch (err) {
-    console.error('Error:', err);
-  
+    console.error('เกิดข้อผิดพลาด:', err);
+    alert('เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง.');
   }
 });
