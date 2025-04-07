@@ -49,6 +49,6 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
     document.getElementById('registrationForm').reset();
   } catch (err) {
     console.error('Error:', err);
-    alert('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
+  
   }
 });
