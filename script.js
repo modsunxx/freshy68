@@ -18,10 +18,11 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
     // Convert image to Base64
     const base64Image = await toBase64(designFile);
 
-    // Upload to ImgBB
+    // ✅ ประกาศตัวแปรก่อนใช้งาน
     const imgbbFormData = new FormData();
     imgbbFormData.append('image', base64Image.split(',')[1]);
 
+    // Upload to ImgBB
     const imgbbRes = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbApiKey}`, {
       method: 'POST',
       body: imgbbFormData
@@ -38,10 +39,10 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
       designURL
     };
 
-    // Send data to Google Apps Script
+    // Send to Google Apps Script
     await fetch(googleScriptURL, {
       method: 'POST',
-      mode: 'no-cors', // Important for GAS
+      mode: 'no-cors',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -54,7 +55,7 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
 
   } catch (err) {
     console.error('Error:', err);
-    alert('Something went wrong. Please try again.');
+    alert('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
   }
 });
 
